@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "e8dda660-882b-4913-a854-c304fbf08678",
+		"name": "IFT605",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create client",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 0,\n    \"firstName\" : \"Jean\",\n    \"lastName\" : \"Monet\",\n    \"userName\" : \"JM1\",\n    \"password\" : \"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8081/client",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get clients",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/clients",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"clients"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
