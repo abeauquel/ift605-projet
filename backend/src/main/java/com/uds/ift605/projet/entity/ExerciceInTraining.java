@@ -3,14 +3,14 @@ package com.uds.ift605.projet.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name ="exercice-in-training")
+@Table(name ="exercice_in_training")
 public class ExerciceInTraining {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @JoinColumn(name = "exercice")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "exercice_id")
     private Exercice exercice;
 
     public ExerciceInTraining() {

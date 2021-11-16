@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name ="training")
 public class Training {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -13,10 +15,13 @@ public class Training {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "date-creation")
+    @Column(name = "date_creation")
     private Timestamp dateCreation;
 
-    @JoinColumn
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
     @OneToMany
     private List<ExerciceInTraining> exerciceInTrainingList;
 

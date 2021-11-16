@@ -6,41 +6,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name ="training-report")
+@Table(name ="training_report")
 public class TrainingReport {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "date-creation")
+    @Column(name = "date_creation")
     private Timestamp dateCreation;
 
-    @Column(name = "tps-total-minute")
+    @Column(name = "tps_total_minute")
     private int tpsTotalMinute;
 
     @Column(name = "entrainement")
     private int entrainement;
 
-    @Column(name = "nb-calorie")
+    @Column(name = "nb_calorie")
     private int nbCalorie;
 
-    @Column(name = "bpm-moyen")
+    @Column(name = "bpm_moyen")
     private int bpmMoyen;
 
-    @Column(name = "bpm-max")
+    @Column(name = "bpm_max")
     private int bpmMax;
 
-    @Column(name = "bpm-min")
+    @Column(name = "bpm_min")
     private int bpmMin;
 
-    @Column(name = "pourcentage-realise")
+    @Column(name = "pourcentage_realise")
     private int pourcentageRealise;
 
-    @Column(name = "vitesse-execution-moyenne-par-mouvement")
-    private List<Integer> listVitesseExecutionMoyenneParMouvement;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
+    private Client client;
+
+    @Column(name = "vitesse_execution_moyenne")
+    private int vitesseExecutionMoyenne;
 
     public TrainingReport() {
-        listVitesseExecutionMoyenneParMouvement = new ArrayList<>();
     }
 
     public long getId() {
@@ -115,11 +118,19 @@ public class TrainingReport {
         this.pourcentageRealise = pourcentageRealise;
     }
 
-    public List<Integer> getVitesseExecutionMoyenneParMouvement() {
-        return listVitesseExecutionMoyenneParMouvement;
+    public Client getUser() {
+        return client;
     }
 
-    public void setVitesseExecutionMoyenneParMouvement(List<Integer> vitesseExecutionMoyenneParMouvement) {
-        this.listVitesseExecutionMoyenneParMouvement = vitesseExecutionMoyenneParMouvement;
+    public void setUser(Client client) {
+        this.client = client;
+    }
+
+    public int getVitesseExecutionMoyenne() {
+        return vitesseExecutionMoyenne;
+    }
+
+    public void setVitesseExecutionMoyenne(int vitesseExecutionMoyenne) {
+        this.vitesseExecutionMoyenne = vitesseExecutionMoyenne;
     }
 }
