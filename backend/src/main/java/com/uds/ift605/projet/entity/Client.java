@@ -23,6 +23,15 @@ public class Client {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "age")
+    private int age;
+
+    @Column(name = "weigth")
+    private int weigth;
+
+    @Column(name = "height")
+    private int height;
+
     public Client(Long id, String firstName, String lastName, String userName, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -39,6 +48,27 @@ public class Client {
         this.lastName = lastName;
         this.userName = userName;
         this.password = password;
+    }
+
+    public Client(String firstName, String lastName, String userName, String password, int age, int weigth, int height) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.age = age;
+        this.weigth = weigth;
+        this.height = height;
+    }
+
+    public Client(Long id, String firstName, String lastName, String userName, String password, int age, int weigth, int height) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+        this.age = age;
+        this.weigth = weigth;
+        this.height = height;
     }
 
     public Long getId() {
@@ -81,4 +111,27 @@ public class Client {
         this.password = password;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getWeigth() {
+        return weigth;
+    }
+
+    public void setWeigth(int weigth) {
+        this.weigth = weigth;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
 }

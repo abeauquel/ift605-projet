@@ -1,0 +1,52 @@
+scalar Date
+
+type Query {
+    exerciceById(id: ID): Exercice
+}
+
+type Exercice {
+    id: ID
+    name: String
+}
+
+type ExerciceSelectionne {
+    id: ID
+    exercice : Exercice
+    repetition: Int
+    serie : Int
+    pause : Int
+
+}
+
+type Entrainement {
+    id: ID
+    name: String
+    mouvements : [ExerciceSelectionne]
+    dateCreation : Date
+}
+
+type RapportEntrainement {
+    id: ID
+    dateEntrainement : Date
+    tpsTotalMinute : Int
+    entrainement : Entrainement
+    nbCalorie : Int
+    bpmMoyen : Int
+    bpmMax : Int
+    bpmMin : Int
+    pourcentageRealise : Int
+    vitesseExecutionMoyenneParMouvement : [Int]
+}
+
+type Utilisateur {
+    id: ID
+    nom: String
+    mail : String
+    age : Int
+    poids : Int
+    taille : Int
+}
+
+
+
+
