@@ -14,6 +14,9 @@ public class ExerciceInTrainingService {
     @Autowired
     private ExerciceInTrainingRepository exerciceInTrainingRepository;
 
+    @Autowired
+    private ExerciceService exerciceService;
+
     public List<ExerciceInTraining> list() {
         return exerciceInTrainingRepository.findAll();
     }
@@ -26,6 +29,9 @@ public class ExerciceInTrainingService {
         Optional<ExerciceInTraining> exerciceInTraining = exerciceInTrainingRepository.findById(id);
         if(!exerciceInTraining.isPresent())
             throw new Exception("idExerciceInTraining n'existe pas ");
+
+        exerciceInTraining.get().setExercice(exerciceService.getExercice(exerciceInTraining.get().getExercice().getId()));
+
         return exerciceInTraining.get();
     }
 }

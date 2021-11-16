@@ -1,5 +1,7 @@
 package com.uds.ift605.projet.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -18,11 +20,11 @@ public class Training {
     @Column(name = "date_creation")
     private Timestamp dateCreation;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "client_id")
     private Client creator;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ExerciceInTraining> exerciceInTrainingList;
 
     public Training() {

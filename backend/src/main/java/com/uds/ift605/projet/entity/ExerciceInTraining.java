@@ -9,9 +9,15 @@ public class ExerciceInTraining {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "exercice_id")
+    @ManyToOne
+    @JoinColumn(name = "exercice_id", nullable = false)
     private Exercice exercice;
+
+    @Column(name = "set")
+    private int set;
+
+    @Column(name = "repetition")
+    private int repetition;
 
     public ExerciceInTraining() {
     }
@@ -30,5 +36,21 @@ public class ExerciceInTraining {
 
     public void setExercice(Exercice exercice) {
         this.exercice = exercice;
+    }
+
+    public int getSet() {
+        return set;
+    }
+
+    public void setSet(int set) {
+        this.set = set;
+    }
+
+    public int getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(int repetion) {
+        this.repetition = repetion;
     }
 }
