@@ -20,7 +20,7 @@ public class Training {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    private Client client;
+    private Client creator;
 
     @OneToMany
     private List<ExerciceInTraining> exerciceInTrainingList;
@@ -59,5 +59,13 @@ public class Training {
 
     public void setExerciceInTrainingList(List<ExerciceInTraining> exerciceInTrainingList) {
         this.exerciceInTrainingList = exerciceInTrainingList;
+    }
+
+    public Client getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Client creator) {
+        this.creator = creator;
     }
 }

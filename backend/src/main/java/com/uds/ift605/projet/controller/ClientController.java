@@ -25,7 +25,6 @@ public class ClientController {
 
     @PostMapping("/client")
     public Client postClient(@RequestBody Client client) throws IOException {
-        //Client client = new Client("Jean", "Jambon", "JJ", "SuperPassword 1234");
         return clientService.creerNouveauClient(client);
     }
 

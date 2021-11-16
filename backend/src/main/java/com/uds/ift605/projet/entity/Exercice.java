@@ -15,6 +15,10 @@ public class Exercice {
     public Exercice() {
     }
 
+    public Exercice(String name) {
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }
