@@ -2,8 +2,6 @@ package com.uds.ift605.projet.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name ="training_report")
@@ -18,11 +16,11 @@ public class TrainingReport {
     @Column(name = "tps_total_minute")
     private int tpsTotalMinute;
 
-    @Column(name = "entrainement")
-    private int entrainement;
-
     @Column(name = "nb_calorie")
     private int nbCalorie;
+
+    @Column(name = "description")
+    private String description;
 
     @Column(name = "bpm_moyen")
     private int bpmMoyen;
@@ -36,9 +34,13 @@ public class TrainingReport {
     @Column(name = "pourcentage_realise")
     private int pourcentageRealise;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "client_id")
     private Client client;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "training_id")
+    private Training training;
 
     @Column(name = "vitesse_execution_moyenne")
     private int vitesseExecutionMoyenne;
@@ -68,14 +70,6 @@ public class TrainingReport {
 
     public void setTpsTotalMinute(int tpsTotalMinute) {
         this.tpsTotalMinute = tpsTotalMinute;
-    }
-
-    public int getEntrainement() {
-        return entrainement;
-    }
-
-    public void setEntrainement(int entrainement) {
-        this.entrainement = entrainement;
     }
 
     public int getNbCalorie() {
@@ -118,19 +112,35 @@ public class TrainingReport {
         this.pourcentageRealise = pourcentageRealise;
     }
 
-    public Client getUser() {
-        return client;
-    }
-
-    public void setUser(Client client) {
-        this.client = client;
-    }
-
     public int getVitesseExecutionMoyenne() {
         return vitesseExecutionMoyenne;
     }
 
     public void setVitesseExecutionMoyenne(int vitesseExecutionMoyenne) {
         this.vitesseExecutionMoyenne = vitesseExecutionMoyenne;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String name) {
+        this.description = name;
     }
 }
