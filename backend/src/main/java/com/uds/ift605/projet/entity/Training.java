@@ -24,11 +24,18 @@ public class Training {
     @JoinColumn(name = "client_id")
     private Client creator;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ExerciceInTraining> exerciceInTrainingList;
 
     public Training() {
         exerciceInTrainingList = new ArrayList<>();
+    }
+
+    public Training(String name, Timestamp dateCreation, Client creator) {
+        exerciceInTrainingList = new ArrayList<>();
+        this.name = name;
+        this.dateCreation = dateCreation;
+        this.creator = creator;
     }
 
     public long getId() {

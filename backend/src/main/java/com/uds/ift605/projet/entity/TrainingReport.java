@@ -48,6 +48,20 @@ public class TrainingReport {
     public TrainingReport() {
     }
 
+    public TrainingReport(Timestamp dateCreation, int tpsTotalMinute, int nbCalorie, String description, int bpmMoyen, int bpmMax, int bpmMin, int pourcentageRealise, Client client, Training training, int vitesseExecutionMoyenne) {
+        this.dateCreation = dateCreation;
+        this.tpsTotalMinute = tpsTotalMinute;
+        this.nbCalorie = nbCalorie;
+        this.description = description;
+        this.bpmMoyen = bpmMoyen;
+        this.bpmMax = bpmMax;
+        this.bpmMin = bpmMin;
+        this.pourcentageRealise = pourcentageRealise;
+        this.client = client;
+        this.training = training;
+        this.vitesseExecutionMoyenne = vitesseExecutionMoyenne;
+    }
+
     public long getId() {
         return id;
     }

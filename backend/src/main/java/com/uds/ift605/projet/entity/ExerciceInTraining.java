@@ -22,6 +22,12 @@ public class ExerciceInTraining {
     public ExerciceInTraining() {
     }
 
+    public ExerciceInTraining(Exercice exercice, int set, int repetition) {
+        this.exercice = exercice;
+        this.set = set;
+        this.repetition = repetition;
+    }
+
     public long getId() {
         return id;
     }
