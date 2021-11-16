@@ -27,7 +27,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 0,\n    \"firstName\" : \"Jean\",\n    \"lastName\" : \"Monet\",\n    \"userName\" : \"JM1\",\n    \"password\" : \"password\"\n}",
+					"raw": "{\n    \"id\": 0,\n    \"firstName\" : \"Jean\",\n    \"lastName\" : \"Monet\",\n    \"userName\" : \"JM1\",\n    \"password\" : \"password\",\n    \"age\": 25,\n    \"weigth\": 150,\n    \"height\": 170\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -48,7 +48,7 @@
 			"response": []
 		},
 		{
-			"name": "get clients",
+			"name": "List clients",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -75,6 +75,160 @@
 					"port": "8081",
 					"path": [
 						"clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Client",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/client/5",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Exercice",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\" : \"push-up\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8081/exercice",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"exercice"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Exercices",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/exercices",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"exercices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Training",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/trainings",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"trainings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Training",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"my super training\",\n    \"exerciceInTrainingList\" : [\n        {\n            \"exercice\" : { \n                \"id\" : 2\n            },\n            \"set\" : 5,\n            \"repetition\" : 12\n\n        }\n\n    ],\n    \"creator\" : {\n        \"id\": 4\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8081/training",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"training"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Training Report",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"tpsTotalMinute\" : 50,\n    \"nbCalorie\" : 200,\n    \"bpmMoyen\" : 140,\n    \"bpmMin\" : 100,\n    \"bpmMax\" : 180,\n    \"pourcentageRealise\" : 100,\n    \"vitesseExecutionMoyenne\" : 10,\n    \"description\": \"my super training termine, p[as facile\",\n    \"client\" : {\n        \"id\":4\n    },\n    \"training\" : {\n        \"id\": 353\n    }\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8081/trainingReport",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"trainingReport"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Training Report",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/trainingReports",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"trainingReports"
 					]
 				}
 			},
