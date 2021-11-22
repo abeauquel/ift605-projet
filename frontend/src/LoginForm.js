@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Cookies from 'universal-cookie';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -28,6 +29,7 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
+const cookies = new Cookies();
 
 export default class LoginForm extends React.Component {
   constructor(props) {
@@ -50,6 +52,8 @@ export default class LoginForm extends React.Component {
             let user = response.find(r => r.userName === data.get('email') && r.password === data.get('password'));
             if (user) {
                 NotificationManager.success('You\'re now logged in', 'Logged in');
+                cookies.set('user', user, { path: '/' });
+                this.props.navigate('/stats');
             } else {
                 NotificationManager.error('Username and/or password does not exist', 'Error');
             }
@@ -61,7 +65,7 @@ export default class LoginForm extends React.Component {
 
   componentDidMount() {
     if (this.props.signUpSuccess === true) {
-        NotificationManager.success('Your account has been created successfully, you can now log in', 'Account created');
+      NotificationManager.success('Your account has been created successfully, you can now log in', 'Account created');
     }
   }
 
