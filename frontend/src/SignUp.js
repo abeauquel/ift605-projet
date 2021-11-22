@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import InputAdornment from '@mui/material/InputAdornment';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -47,7 +48,10 @@ export default class SignUp extends React.Component {
             userName: data.get('email'),
             password: data.get('password'),
             firstName: data.get('firstName'),
-            lastName: data.get('lastName')
+            lastName: data.get('lastName'),
+            age: data.get('age'),
+            weigth: data.get('weight'),
+            height: data.get('height')
         })})
         .then(response => response.json())
         .then(response => {
@@ -98,6 +102,42 @@ export default class SignUp extends React.Component {
                       label="Last Name"
                       name="lastName"
                       autoComplete="family-name"
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      type="number"
+                      label="Weight"
+                      id="weight"
+                      name="weight"
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      type="number"
+                      label="Height"
+                      id="height"
+                      name="height"
+                      InputProps={{
+                        startAdornment: <InputAdornment position="start">cm</InputAdornment>,
+                      }}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      type="number"
+                      label="Age"
+                      id="age"
+                      name="age"
                     />
                   </Grid>
                   <Grid item xs={12}>
