@@ -217,20 +217,140 @@
 			"response": []
 		},
 		{
-			"name": "List Training Report",
+			"name": "Add coach /client/{idClient}/coach/{idCoach}",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{server}}:8081/trainingReports",
+					"raw": "{{server}}:8081/client/5/coach/4",
 					"host": [
 						"{{server}}"
 					],
 					"port": "8081",
 					"path": [
-						"trainingReports"
+						"client",
+						"5",
+						"coach",
+						"4"
+					]
+				},
+				"description": "/client/{idClient}/coach/{idCoach}"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove coach /client/{idClient}/coach/{idCoach}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/client/5/coach/6",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5",
+						"coach",
+						"6"
 					]
 				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add friend /client/{idClient}/friend/{idFriend}",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/client/5/friend/4",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5",
+						"friend",
+						"4"
+					]
+				},
+				"description": "/client/{idClient}/friend/{idFriend}"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove friend /client/{idClient}/friend/{idFriend}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/client/5/friend/4",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5",
+						"friend",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Challenge /client/{idClient}/challenge",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"clientDTO\" : {\n        \"id\" : 4\n    },\n    \"idTraining\" : 7\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}:8081/client/5/challenge",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5",
+						"challenge"
+					]
+				},
+				"description": "/client/{idClient}/friend/{idFriend}"
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Challenge /client/{idClient}/challenge/{idChallenge}",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{server}}:8081/client/5/challenge/16",
+					"host": [
+						"{{server}}"
+					],
+					"port": "8081",
+					"path": [
+						"client",
+						"5",
+						"challenge",
+						"16"
+					]
+				},
+				"description": "/client/{idClient}/friend/{idFriend}"
 			},
 			"response": []
 		}
