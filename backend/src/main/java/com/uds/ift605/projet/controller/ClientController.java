@@ -23,10 +23,35 @@ public class ClientController {
         return clientService.recupererClient(id);
     }
 
+    @RequestMapping("/client/{username}")
+    public Client getClientByUsername(@PathVariable String username) throws Exception {
+        return clientService.recupererClient(username);
+    }
+
     @PostMapping("/client")
     public Client postClient(@RequestBody Client client) throws IOException {
         return clientService.creerNouveauClient(client);
     }
+
+    @PutMapping("/client/{idClient}/coach/{idCoach}")
+    public Client addCoach(@PathVariable Long idClient, @PathVariable Long idCoach) throws Exception {
+        return clientService.addCoach(idCoach, idClient);
+    }
+
+    @DeleteMapping("/client/{idClient}/coach/{idCoach}")
+    public Client removeCoach(@PathVariable Long idClient, @PathVariable Long idCoach) throws Exception {
+        return clientService.removeCoach(idCoach, idClient);
+    }
+
+//    @PutMapping("/client/{idClient}/friend/{idFriend}")
+//    public Client addFriend(@PathVariable Long idClient, @PathVariable Long idFriend) throws Exception {
+//        return clientService.ad(idFriend, idClient);
+//    }
+//
+//    @DeleteMapping("/client/{idClient}/coach/{idCoach}")
+//    public Client removeCoach(@PathVariable Long idClient, @PathVariable Long idCoach) throws Exception {
+//        return clientService.removeCoach(idCoach, idClient);
+//    }
 
 
     @PostMapping("/test")

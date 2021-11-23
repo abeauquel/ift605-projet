@@ -3,6 +3,8 @@ package com.uds.ift605.projet.entity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name ="client")
@@ -31,6 +33,12 @@ public class Client {
 
     @Column(name = "height")
     private int height;
+
+    @ElementCollection
+    private List<Long> coachs = new ArrayList<>();
+
+    @ElementCollection
+    private List<Long> friends = new ArrayList<>();
 
     public Client(Long id, String firstName, String lastName, String userName, String password) {
         this.id = id;
@@ -133,5 +141,29 @@ public class Client {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public List<Long> getCoachs() {
+        return coachs;
+    }
+
+    public void setCoachs(List<Long> coachs) {
+        this.coachs = coachs;
+    }
+
+    public List<Long> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<Long> friends) {
+        this.friends = friends;
+    }
+
+    public void removeCoachById(Long idCoach){
+        coachs = coachs.stream().filter(c -> !Objects.equals(c, idCoach)).collect(Collectors.toList());
+    }
+
+    public void removeFriendById(Long idFriend){
+        friends = friends.stream().filter(c -> !Objects.equals(c, idFriend)).collect(Collectors.toList());
     }
 }
