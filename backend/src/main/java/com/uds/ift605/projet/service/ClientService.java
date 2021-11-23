@@ -57,4 +57,25 @@ public class ClientService {
         client.removeCoachById(idCoach);
         return clientRepository.save(client);
     }
+
+    public Client addFriend(Long idFriend, Long idClient) throws Exception {
+        if(Objects.equals(idFriend, idClient))
+            throw new Exception("error idFriend == idClient");
+        Client friend = recupererClient(idFriend);
+        Client client = recupererClient(idClient);
+
+        if(client.getFriends().stream().anyMatch(id -> Objects.equals(id, friend.getId())))
+            throw new Exception("error client est deja dans la liste");
+
+        client.getFriends().add(friend.getId());
+        return clientRepository.save(client);
+    }
+
+    public Client removeFriend(Long idFriend, Long idClient) throws Exception {
+        if(Objects.equals(idFriend, idClient))
+            throw new Exception("error idFriend == idClient");
+        Client client = recupererClient(idClient);
+        client.removeFriendById(idFriend);
+        return clientRepository.save(client);
+    }
 }

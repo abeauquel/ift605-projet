@@ -43,15 +43,15 @@ public class ClientController {
         return clientService.removeCoach(idCoach, idClient);
     }
 
-//    @PutMapping("/client/{idClient}/friend/{idFriend}")
-//    public Client addFriend(@PathVariable Long idClient, @PathVariable Long idFriend) throws Exception {
-//        return clientService.ad(idFriend, idClient);
-//    }
-//
-//    @DeleteMapping("/client/{idClient}/coach/{idCoach}")
-//    public Client removeCoach(@PathVariable Long idClient, @PathVariable Long idCoach) throws Exception {
-//        return clientService.removeCoach(idCoach, idClient);
-//    }
+    @PutMapping("/client/{idClient}/friend/{idFriend}")
+    public Client addFriend(@PathVariable Long idClient, @PathVariable Long idFriend) throws Exception {
+        return clientService.addFriend(idFriend, idClient);
+    }
+
+    @DeleteMapping("/client/{idClient}/friend/{idFriend}")
+    public Client removeFriend(@PathVariable Long idClient, @PathVariable Long idFriend) throws Exception {
+        return clientService.removeFriend(idFriend, idClient);
+    }
 
 
     @PostMapping("/test")
