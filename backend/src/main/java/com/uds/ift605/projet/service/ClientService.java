@@ -18,10 +18,12 @@ import java.util.Optional;
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
-    @Autowired
-    private ClientDTORepository clientDTORepository;
+
     @Autowired
     private ChallengeRepository challengeRepository;
+
+    @Autowired
+    private ClientDTOService clientDTOService;
 
     public List<Client> list() {
         return clientRepository.findAll();
@@ -58,10 +60,10 @@ public class ClientService {
         Client coach = recupererClient(idCoach);
         Client client = recupererClient(idClient);
 
-        if(client.getCoachs().stream().anyMatch(id -> Objects.equals(id, coach.getId())))
+        if(client.getCoachs().stream().anyMatch(clientDTO -> Objects.equals(clientDTO.getId(), coach.getId())))
             throw new Exception("error coach est deja dans la liste");
 
-        client.getCoachs().add(coach.getId());
+        client.getCoachs().add(clientDTOService.getOrCreate(coach));
         return clientRepository.save(client);
     }
 
@@ -70,7 +72,8 @@ public class ClientService {
             throw new Exception("error idCoach == idClient");
         Client client = recupererClient(idClient);
         client.removeCoachById(idCoach);
-        return clientRepository.save(client);
+        clientRepository.save(client);
+        return client;
     }
 
     public Client addFriend(Long idFriend, Long idClient) throws Exception {
@@ -79,10 +82,10 @@ public class ClientService {
         Client friend = recupererClient(idFriend);
         Client client = recupererClient(idClient);
 
-        if(client.getFriends().stream().anyMatch(id -> Objects.equals(id, friend.getId())))
+        if(client.getFriends().stream().anyMatch(clientDTO -> Objects.equals(clientDTO.getId(), friend.getId())))
             throw new Exception("error client est deja dans la liste");
 
-        client.getFriends().add(friend.getId());
+        client.getFriends().add(clientDTOService.getOrCreate(friend));
         return clientRepository.save(client);
     }
 
@@ -91,7 +94,8 @@ public class ClientService {
             throw new Exception("error idFriend == idClient");
         Client client = recupererClient(idClient);
         client.removeFriendById(idFriend);
-        return clientRepository.save(client);
+        clientRepository.save(client);
+        return client;
     }
 
     public Client addChallenge(Long idClient, Challenge challenge) throws Exception {
@@ -99,8 +103,7 @@ public class ClientService {
             throw new Exception("error challenge.getClientDTO().id == idClient");
         Client client = recupererClient(idClient);
         Client creatorChallenge = recupererClient(challenge.getClientDTO().getId());
-        ClientDTO clientDTO = new ClientDTO(creatorChallenge);
-        challenge.setClientDTO(clientDTORepository.save(clientDTO));
+        challenge.setClientDTO(clientDTOService.getOrCreate(creatorChallenge));
         client.getChallenges().add(challengeRepository.save(challenge));
         return clientRepository.save(client);
     }

@@ -1,5 +1,7 @@
 package com.uds.ift605.projet.entity;
 
+import com.uds.ift605.projet.dto.ClientDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,11 @@ public class Client {
     @Column(name = "height")
     private int height;
 
-    @ElementCollection
-    private List<Long> coachs = new ArrayList<>();
+    @OneToMany
+    private List<ClientDTO> coachs = new ArrayList<>();
 
-    @ElementCollection
-    private List<Long> friends = new ArrayList<>();
-
+    @OneToMany
+    private List<ClientDTO> friends = new ArrayList<>();
 
     @OneToMany
     private List<Challenge> challenges = new ArrayList<>();
@@ -147,28 +148,28 @@ public class Client {
         this.height = height;
     }
 
-    public List<Long> getCoachs() {
+    public List<ClientDTO> getCoachs() {
         return coachs;
     }
 
-    public void setCoachs(List<Long> coachs) {
+    public void setCoachs(List<ClientDTO> coachs) {
         this.coachs = coachs;
     }
 
-    public List<Long> getFriends() {
+    public List<ClientDTO> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Long> friends) {
+    public void setFriends(List<ClientDTO> friends) {
         this.friends = friends;
     }
 
     public void removeCoachById(Long idCoach){
-        coachs = coachs.stream().filter(c -> !Objects.equals(c, idCoach)).collect(Collectors.toList());
+        coachs = coachs.stream().filter(c -> !Objects.equals(c.getId(), idCoach)).collect(Collectors.toList());
     }
 
     public void removeFriendById(Long idFriend){
-        friends = friends.stream().filter(c -> !Objects.equals(c, idFriend)).collect(Collectors.toList());
+        friends = friends.stream().filter(c -> !Objects.equals(c.getId(), idFriend)).collect(Collectors.toList());
     }
 
     public List<Challenge> getChallenges() {
