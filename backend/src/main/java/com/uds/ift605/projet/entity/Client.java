@@ -40,6 +40,10 @@ public class Client {
     @ElementCollection
     private List<Long> friends = new ArrayList<>();
 
+
+    @OneToMany
+    private List<Challenge> challenges = new ArrayList<>();
+
     public Client(Long id, String firstName, String lastName, String userName, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -165,5 +169,17 @@ public class Client {
 
     public void removeFriendById(Long idFriend){
         friends = friends.stream().filter(c -> !Objects.equals(c, idFriend)).collect(Collectors.toList());
+    }
+
+    public List<Challenge> getChallenges() {
+        return challenges;
+    }
+
+    public void setChallenges(List<Challenge> challenges) {
+        this.challenges = challenges;
+    }
+
+    public void removeChallengeById(Long id){
+        challenges = challenges.stream().filter(c -> !Objects.equals(c.getId(), id)).collect(Collectors.toList());
     }
 }

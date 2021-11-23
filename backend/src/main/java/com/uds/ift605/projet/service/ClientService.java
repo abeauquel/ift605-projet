@@ -1,6 +1,10 @@
 package com.uds.ift605.projet.service;
 
+import com.uds.ift605.projet.dto.ClientDTO;
+import com.uds.ift605.projet.entity.Challenge;
 import com.uds.ift605.projet.entity.Client;
+import com.uds.ift605.projet.repository.ChallengeRepository;
+import com.uds.ift605.projet.repository.ClientDTORepository;
 import com.uds.ift605.projet.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,10 @@ import java.util.Optional;
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
+    @Autowired
+    private ClientDTORepository clientDTORepository;
+    @Autowired
+    private ChallengeRepository challengeRepository;
 
     public List<Client> list() {
         return clientRepository.findAll();
@@ -35,6 +43,13 @@ public class ClientService {
         if(!client.isPresent())
             throw new Exception("idClient n'existe pas ");
         return client.get();
+    }
+
+    public Challenge recupererChallenge(Long idChallenge) throws Exception {
+        Optional<Challenge> challenge = challengeRepository.findById(idChallenge);
+        if(!challenge.isPresent())
+            throw new Exception("idChallenge n'existe pas ");
+        return challenge.get();
     }
 
     public Client addCoach(Long idCoach, Long idClient) throws Exception {
@@ -77,5 +92,25 @@ public class ClientService {
         Client client = recupererClient(idClient);
         client.removeFriendById(idFriend);
         return clientRepository.save(client);
+    }
+
+    public Client addChallenge(Long idClient, Challenge challenge) throws Exception {
+        if(Objects.equals(challenge.getClientDTO().id, idClient))
+            throw new Exception("error challenge.getClientDTO().id == idClient");
+        Client client = recupererClient(idClient);
+        Client creatorChallenge = recupererClient(challenge.getClientDTO().getId());
+        ClientDTO clientDTO = new ClientDTO(creatorChallenge);
+        challenge.setClientDTO(clientDTORepository.save(clientDTO));
+        client.getChallenges().add(challengeRepository.save(challenge));
+        return clientRepository.save(client);
+    }
+
+    public Client removeChallenge(Long idClient, Long idChallenge) throws Exception {
+        Client client = recupererClient(idClient);
+        Challenge challenge = recupererChallenge(idChallenge);
+        client.removeChallengeById(idChallenge);
+        clientRepository.save(client);
+        challengeRepository.delete(challenge);
+        return client;
     }
 }

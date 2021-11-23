@@ -1,11 +1,13 @@
 package com.uds.ift605.projet.controller;
 
+import com.uds.ift605.projet.entity.Challenge;
 import com.uds.ift605.projet.entity.Client;
 import com.uds.ift605.projet.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -53,6 +55,16 @@ public class ClientController {
         return clientService.removeFriend(idFriend, idClient);
     }
 
+    @PutMapping("/client/{idClient}/challenge")
+    public Client addChallenge(@PathVariable Long idClient, @RequestBody Challenge challenge) throws Exception {
+        challenge.setDateCreation(new Timestamp(System.currentTimeMillis()));
+        return clientService.addChallenge(idClient, challenge);
+    }
+
+    @DeleteMapping("/client/{idClient}/challenge/{idChallenge}")
+    public Client addChallenge(@PathVariable Long idClient, @PathVariable Long idChallenge) throws Exception {
+        return clientService.removeChallenge(idClient, idChallenge);
+    }
 
     @PostMapping("/test")
     public String test() throws IOException {
