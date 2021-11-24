@@ -23,42 +23,43 @@ Rien pour le moment
     camera.position.z = 5;
 
     const animate = function () {
-        requestAnimationFrame( animate );
+        //requestAnimationFrame( animate );
 
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
-
+       cube.rotation.x += 0.01;
+       cube.rotation.y += 0.01;
+       // cube.rotation.x += 1;
+       // cube.rotation.y += 1;
         renderer.render( scene, camera );
     };
 
-    animate();
-
     //webSocket
-    // Créer une connexion WebSocket
+    //Créer une connexion WebSocket
     const socket = new WebSocket('ws://localhost:9898');
 
     socket.onopen = function(e) {
-        alert("[open] Connection established");
-        alert("Sending to server");
-        socket.send("My name is John");
+       console.log("[open] Connection established");
+       console.log("Sending to server");
+        //socket.send("My name is John");
     };
 
     socket.onmessage = function(event) {
-        alert(`[message] Data received from server: ${event.data}`);
+        let data = event.data;
+        animate();
+        console.log(`[message] Data received from server: ${event.data}`);
     };
 
     socket.onclose = function(event) {
         if (event.wasClean) {
-            alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+            console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
         } else {
             // e.g. server process killed or network down
             // event.code is usually 1006 in this case
-            alert('[close] Connection died');
+            console.log('[close] Connection died');
         }
     };
 
     socket.onerror = function(error) {
-        alert(`[error] ${error.message}`);
+        console.log(`[error] ${error.message}`);
     };
 
 </script>

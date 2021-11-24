@@ -56,5 +56,14 @@ wss.on('connection', ws => {
     ws.on('message', message => {
         console.log(`Received message => ${message}`)
     })
-    ws.send('Hello! Message From Server!!')
+    ws.send('Hello! Message From Server!!');
+    for (let i = 0; i < 1000; i++) {
+        const date = new Date();
+        let curDate = null;
+        do { curDate = new Date(); }
+        while(curDate-date < 100);
+        ws.send('bouge cube');
+    }
+
 })
+
