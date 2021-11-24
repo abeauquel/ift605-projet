@@ -38,8 +38,23 @@ router.get('/js/three.js',function(req,res){
     res.sendFile(path.join(__dirname+'/js/three.js'));
 });
 
+
 app.listen(port, hostname, () => {
     console.log(`Le serveur tourne à l'adresse http://${hostname}:${port}/`);
 })
 
 app.use('/', router);
+
+
+
+//websocket
+const WebSocket = require('ws')
+// Create a server object
+const wss = new WebSocket.Server({ port: 9898 })
+
+wss.on('connection', ws => {
+    ws.on('message', message => {
+        console.log(`Received message => ${message}`)
+    })
+    ws.send('Hello! Message From Server!!')
+})
