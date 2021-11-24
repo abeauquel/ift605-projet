@@ -22,13 +22,11 @@ Rien pour le moment
 
     camera.position.z = 5;
 
-    const animate = function () {
-        //requestAnimationFrame( animate );
+    const animate = function (x, y, z) {
+        //requestAnimationFrame( animate );c
 
-       cube.rotation.x += 0.01;
-       cube.rotation.y += 0.01;
-       // cube.rotation.x += 1;
-       // cube.rotation.y += 1;
+        cube.translateX(x);
+        cube.translateY(y);
         renderer.render( scene, camera );
     };
 
@@ -43,9 +41,9 @@ Rien pour le moment
     };
 
     socket.onmessage = function(event) {
-        let data = event.data;
-        animate();
-        console.log(`[message] Data received from server: ${event.data}`);
+        let data = JSON.parse(event.data);
+        animate(data.x, data.y, data.z);
+        //console.log(`[message] Data received from server: ${event.data}`);
     };
 
     socket.onclose = function(event) {
