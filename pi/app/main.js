@@ -18,4 +18,28 @@ listenerConnection = function(val) {
         console.log('disconnection '+ new Date())
 };
 
-bluetooth.startALL(listenerRFCOMM, listenerConnection);
+//bluetooth.startALL(listenerRFCOMM, listenerConnection);
+
+
+//Server Web
+const hostname = "127.0.0.1";
+const port = 8000;
+const express = require('express');
+const app = express();
+const path = require('path');
+const router = express.Router();
+
+
+router.get('/',function(req,res){
+    res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+router.get('/js/three.js',function(req,res){
+    res.sendFile(path.join(__dirname+'/js/three.js'));
+});
+
+app.listen(port, hostname, () => {
+    console.log(`Le serveur tourne à l'adresse http://${hostname}:${port}/`);
+})
+
+app.use('/', router);

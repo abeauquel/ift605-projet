@@ -2,3 +2,5 @@
 .idea/
 
 backend/data/
+
+pi/app/node_modules/
