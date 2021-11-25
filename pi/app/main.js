@@ -1,4 +1,5 @@
 const bluetooth = require('./src/bluetooth.js');
+const sensor = require('./src/sensor.js');
 const actionFunctions = require('./src/action');
 
 listenerRFCOMM = function(val) {
@@ -46,29 +47,5 @@ app.listen(port, hostname, () => {
 app.use('/', router);
 
 
-
-//websocket
-const WebSocket = require('ws')
-// Create a server object
-const wss = new WebSocket.Server({ port: 9898 })
-
-wss.on('connection', ws => {
-    ws.on('message', message => {
-        console.log(`Received message => ${message}`)
-    })
-    ws.send('Hello! Message From Server!!');
-
-    for (let i = 0; i < 1000; i++) {
-        const date = new Date();
-        let curDate = null;
-        do { curDate = new Date(); }
-        while(curDate-date < 100);
-        let data = {};
-        data.x = 0.01;
-        data.y = 0.01;
-        data.z = 0.01;
-        ws.send(JSON.stringify(data));
-    }
-
-})
+sensor.start();
 

@@ -5,7 +5,6 @@
     <title>Piapp</title>
 </head>
 <body>
-Rien pour le moment
 <script src="js/three.js"></script>
 <script>
     const scene = new THREE.Scene();
@@ -24,9 +23,11 @@ Rien pour le moment
 
     const animate = function (x, y, z) {
         //requestAnimationFrame( animate );c
-
-        cube.translateX(x);
-        cube.translateY(y);
+        cube.rotation.x += x;
+        cube.rotation.y += y;
+        //cube.rotation.z += z;
+        // cube.translateX(x);
+        // cube.translateY(y);
         renderer.render( scene, camera );
     };
 
