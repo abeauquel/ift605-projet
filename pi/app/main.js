@@ -29,6 +29,49 @@ app.listen(port, hostname, () => {
 
 app.use('/', router);
 
+
+
+
+let listenerRFCOMM = function (val) {
+    let messages = actionFunctions.parseMessages(val);
+    for (let message of messages) {
+        console.log(message);
+        let action = actionFunctions.deserializeAction(message);
+
+        console.log(action);
+    }
+}
+
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
+let myWs = null;
+//Create an event handler:
+let eventOnConnection = function () {
+    console.log('Connection true');
+    let data = {};
+    data.action = 'connection';
+    data.value = true;
+    if (myWs)
+        myWs.send(JSON.stringify(data));
+}
+
+let eventOnDisConnection = function () {
+    console.log('Connection false');
+    let data = {};
+    data.action = 'connection';
+    data.value = false;
+    if (myWs)
+        myWs.send(JSON.stringify(data));
+};
+
+//Assign the event handler to an event:
+eventEmitter.on('connection-true', eventOnConnection);
+eventEmitter.on('connection-false', eventOnDisConnection);
+
+bluetooth.startALL(listenerRFCOMM, eventEmitter);
+
+
+
 const WebSocket = require('ws')
 // Create a server object
 const wss = new WebSocket.Server({ port: 9898 })
@@ -36,33 +79,10 @@ const wss = new WebSocket.Server({ port: 9898 })
 
 
 wss.on('connection', ws => {
-    // ws.on('message', message => {
-    //     console.log(`Received message => ${message}`)
+    myWs = ws;
     start(ws);
 })
-
-
 let start = async function(ws){
-
-    let listenerRFCOMM = function (val) {
-        let messages = actionFunctions.parseMessages(val);
-        for (let message of messages) {
-            console.log(message);
-            let action = actionFunctions.deserializeAction(message);
-
-            console.log(action);
-        }
-    }
-
-    let listenerConnection = function (val) {
-        if (val)
-            console.log('connection ' + new Date()); // todo envoyer : est connecté
-        else
-            console.log('disconnection ' + new Date())
-    };
-
-    //bluetooth.startALL(listenerRFCOMM, listenerConnection);
-
     heartbeat.start(ws);
     exercice.start(ws);
     sensor.start(ws);

@@ -30,6 +30,20 @@
     const cube = new THREE.Mesh( geometry, material );
     const cubeExercice = new THREE.Mesh( geometry, material );
 
+    const ACTION_HEART_BEAT = 'heartbeat';
+    const ACTION_HEART_ACCEL = 'accel';
+    const ACTION_EXERCICE = 'exercice';
+    const ACTION_CONNECTION = 'connection';
+
+    const tagHeartBeat = document.getElementById("#heartbeat");
+    const tagExerciceName = document.getElementById("#exercice-name");
+    const tagExerciceSet = document.getElementById("#exercice-set");
+    const tagExerciceRep = document.getElementById("#exercice-repetition");
+    const tagConnection = document.getElementById("#connection");
+
+    const socket = new WebSocket('ws://localhost:9898');
+
+
     scene.add( cube );
     scene.add( cubeExercice );
 
@@ -64,22 +78,10 @@
         renderer.render( scene, camera );
     };
 
-    //webSocket
-    //Créer une connexion WebSocket
-    const ACTION_HEART_BEAT = 'heartbeat';
-    const ACTION_HEART_ACCEL = 'accel';
-    const ACTION_EXERCICE = 'exercice';
 
-    const tagHeartBeat = document.getElementById("#heartbeat");
-    const tagExerciceName = document.getElementById("#exercice-name");
-    const tagExerciceSet = document.getElementById("#exercice-set");
-    const tagExerciceRep = document.getElementById("#exercice-repetition");
-
-    const socket = new WebSocket('ws://localhost:9898');
     socket.onopen = function(e) {
        console.log("[open] Connection established");
        console.log("Sending to server");
-        //socket.send("My name is John");
     };
 
     socket.onmessage = function(event) {
@@ -91,6 +93,9 @@
         if(data.action === ACTION_HEART_ACCEL){
             animate(data.x, data.y, data.z);
         }
+        if(data.action === ACTION_CONNECTION){
+            handleConnection(data);
+        }
 
         if(data.action === ACTION_EXERCICE){
             animateExercice(data.x, data.y, data.z);
@@ -99,6 +104,16 @@
             tagExerciceRep.innerText = "repetition " + data.repetition;
         }
     };
+
+    let handleConnection = function(data){
+        if(data.value){
+            tagConnection.innerText="Phone online";
+            tagConnection.style.color='green';
+        }else {
+            tagConnection.innerText="Phone offline";
+            tagConnection.style.color='red';
+        }
+    }
 
     socket.onclose = function(event) {
         if (event.wasClean) {

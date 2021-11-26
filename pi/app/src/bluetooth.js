@@ -5,7 +5,7 @@ const execSetupRFCOMM0 = spawn('sh', ['setupRFCOMM.sh']);
 
 const input = "/dev/rfcomm0";
 let callBackCommand = function (val){};
-let callBackDeviceIsConnected = function (val){};
+let eventEmitter = null;
 let readStream;
 
 function execSysCall(command) {
@@ -38,12 +38,13 @@ async function setupRFCOMM(){
             console.log("Waiting device connection ...");
             let startRFCOMM0 = spawn('sudo', ['stdbuf','-i0', '-o0', '-e0', 'rfcomm', 'watch', '/dev/rfcomm0', '0']);
             startRFCOMM0.stdout.on('data', (data) => {
+
                 if(data.includes('Connection')){
                     waitingCommand();
-                    callBackDeviceIsConnected(true);
+                    eventEmitter.emit('connection-true');
                 }
                 if(data.includes('Disconnected')){
-                    callBackDeviceIsConnected(false);
+                    eventEmitter.emit('connection-false');
                     readStream.close();
                 }
                 //console.log(`stdout: ${data}`);
@@ -81,14 +82,13 @@ function sendMessage(value){
 
 
 
-async function startALL(listenerCommand, listenerConnection){
+async function startALL(listenerCommand, peventEmitter){
     callBackCommand = listenerCommand;
-    callBackDeviceIsConnected = listenerConnection;
-
+    eventEmitter = peventEmitter;
     await setupRFCOMM();
 }
 
 module.exports = {
-    startALL : function (listenerCommand, listenerConnection){ startALL(listenerCommand, listenerConnection);},
+    startALL : startALL,
     sendMessage
 };
