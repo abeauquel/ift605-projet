@@ -2,8 +2,12 @@ const bluetooth = require('./src/bluetooth.js');
 const sensor = require('./src/sensor.js');
 const heartbeat = require('./src/heartbeat.js');
 const exercice = require('./src/exercice.js');
+const training = require('./src/training.js');
 const actionFunctions = require('./src/action');
 
+const WebSocket = require('ws');
+const events = require('events');
+const eventEmitter = new events.EventEmitter();
 
 //Server Web
 const hostname = "127.0.0.1";
@@ -30,20 +34,25 @@ app.listen(port, hostname, () => {
 app.use('/', router);
 
 
-
+let startTraining = function(training){
+    console.log('START TRAINING !!!');
+    console.log(training);
+}
 
 let listenerRFCOMM = function (val) {
     let messages = actionFunctions.parseMessages(val);
     for (let message of messages) {
         console.log(message);
         let action = actionFunctions.deserializeAction(message);
-
-        console.log(action);
+        if(action.action === 'start_training'){
+            let id = action.id;
+            training.getTraining(id, startTraining);
+        }
+        //console.log(action);
     }
 }
 
-var events = require('events');
-var eventEmitter = new events.EventEmitter();
+
 let myWs = null;
 //Create an event handler:
 let eventOnConnection = function () {
@@ -51,7 +60,7 @@ let eventOnConnection = function () {
     let data = {};
     data.action = 'connection';
     data.value = true;
-    if (myWs)
+    if (myWs != null)
         myWs.send(JSON.stringify(data));
 }
 
@@ -60,7 +69,7 @@ let eventOnDisConnection = function () {
     let data = {};
     data.action = 'connection';
     data.value = false;
-    if (myWs)
+    if (myWs != null)
         myWs.send(JSON.stringify(data));
 };
 
@@ -72,7 +81,6 @@ bluetooth.startALL(listenerRFCOMM, eventEmitter);
 
 
 
-const WebSocket = require('ws')
 // Create a server object
 const wss = new WebSocket.Server({ port: 9898 })
 
