@@ -1,6 +1,7 @@
 const bluetooth = require('./src/bluetooth.js');
 const sensor = require('./src/sensor.js');
 const heartbeat = require('./src/heartbeat.js');
+const exercice = require('./src/exercice.js');
 const actionFunctions = require('./src/action');
 
 listenerRFCOMM = function(val) {
@@ -62,6 +63,7 @@ wss.on('connection', ws => {
 
 let start = async function(ws){
     heartbeat.start(ws);
+    exercice.start(ws);
     sensor.start(ws);
 }
 

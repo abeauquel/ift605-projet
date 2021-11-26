@@ -6,6 +6,9 @@
 </head>
 <body>
 <h1 id="#heartbeat" style="color: red; position: absolute">heartbeat : </h1>
+<h1 id="#exercice-name" style="color: white; position: absolute; margin-top: 60px">exercice : </h1>
+<h1 id="#exercice-set" style="color: white; position: absolute; margin-top: 110px">set 1 sur 4 </h1>
+<h1 id="#exercice-repetition" style="color: white; position: absolute; margin-top: 160px">rep 1 sur 12 </h1>
 <script src="js/three.js"></script>
 <script>
     const scene = new THREE.Scene();
@@ -18,8 +21,16 @@
     const geometry = new THREE.BoxGeometry();
     const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
     const cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
+    const cubeExercice = new THREE.Mesh( geometry, material );
 
+    scene.add( cube );
+    scene.add( cubeExercice );
+
+
+    cubeExercice.translateX(-2);
+    cube.translateX(2);
+    cube.translateY(1.5);
+    cubeExercice.translateY(1.5);
     camera.position.z = 5;
 
     const animate = async function (x, y, z) {
@@ -32,12 +43,30 @@
         renderer.render( scene, camera );
     };
 
+    const animateExercice = async function (x, y, z) {
+        //requestAnimationFrame( animate );c
+        if(x !== 0.0)
+            cubeExercice.translateX(x);
+        if(y !== 0.0)
+            cubeExercice.translateY(y);
+        if(z !== 0.0)
+            cubeExercice.translateZ(z);
+        //cube.rotation.z += z;
+        // cube.translateX(x);
+        // cube.translateY(y);
+        renderer.render( scene, camera );
+    };
+
     //webSocket
     //Créer une connexion WebSocket
     const ACTION_HEART_BEAT = 'heartbeat';
     const ACTION_HEART_ACCEL = 'accel';
+    const ACTION_EXERCICE = 'exercice';
 
     const tagHeartBeat = document.getElementById("#heartbeat");
+    const tagExerciceName = document.getElementById("#exercice-name");
+    const tagExerciceSet = document.getElementById("#exercice-set");
+    const tagExerciceRep = document.getElementById("#exercice-repetition");
 
     const socket = new WebSocket('ws://localhost:9898');
     socket.onopen = function(e) {
@@ -54,6 +83,13 @@
         }
         if(data.action === ACTION_HEART_ACCEL){
             animate(data.x, data.y, data.z);
+        }
+
+        if(data.action === ACTION_EXERCICE){
+            animateExercice(data.x, data.y, data.z);
+            tagExerciceName.innerText = "exercice "+ data.name;
+            tagExerciceSet.innerText = "set " + data.set;
+            tagExerciceRep.innerText = "repetition " + data.repetition;
         }
     };
 
