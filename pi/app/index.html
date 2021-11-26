@@ -5,10 +5,17 @@
     <title>Piapp</title>
 </head>
 <body>
-<h1 id="#heartbeat" style="color: red; position: absolute">heartbeat : </h1>
-<h1 id="#exercice-name" style="color: white; position: absolute; margin-top: 60px">exercice : </h1>
-<h1 id="#exercice-set" style="color: white; position: absolute; margin-top: 110px">set 1 sur 4 </h1>
-<h1 id="#exercice-repetition" style="color: white; position: absolute; margin-top: 160px">rep 1 sur 12 </h1>
+<div style="position: absolute; padding-left: 10px;color: white; padding-top: 50px">
+
+    <h1 id="#heartbeat" style="color: red;">heartbeat : </h1>
+    <h1 id="#exercice-name">exercice : </h1>
+    <h1 id="#exercice-set">set 1 sur 4 </h1>
+    <h1 id="#exercice-repetition">rep 1 sur 12 </h1>
+</div>
+<div style="right: 0px; position: absolute; padding-right: 10px">
+    <h1 id="#connection" style="color: red;">Phone offline</h1>
+    <h1 id="#you" style="color: white;">You :</h1>
+</div>
 <script src="js/three.js"></script>
 <script>
     const scene = new THREE.Scene();
