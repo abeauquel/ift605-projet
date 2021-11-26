@@ -1,5 +1,6 @@
 const bluetooth = require('./src/bluetooth.js');
 const sensor = require('./src/sensor.js');
+const heartbeat = require('./src/heartbeat.js');
 const actionFunctions = require('./src/action');
 
 listenerRFCOMM = function(val) {
@@ -46,6 +47,24 @@ app.listen(port, hostname, () => {
 
 app.use('/', router);
 
+const WebSocket = require('ws')
+// Create a server object
+const wss = new WebSocket.Server({ port: 9898 })
 
-sensor.start();
+
+
+wss.on('connection', ws => {
+    // ws.on('message', message => {
+    //     console.log(`Received message => ${message}`)
+    start(ws);
+})
+
+
+let start = async function(ws){
+    heartbeat.start(ws);
+    sensor.start(ws);
+}
+
+
+
 

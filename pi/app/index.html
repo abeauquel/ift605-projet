@@ -5,6 +5,7 @@
     <title>Piapp</title>
 </head>
 <body>
+<h1 id="#heartbeat" style="color: red; position: absolute">heartbeat : </h1>
 <script src="js/three.js"></script>
 <script>
     const scene = new THREE.Scene();
@@ -21,7 +22,7 @@
 
     camera.position.z = 5;
 
-    const animate = function (x, y, z) {
+    const animate = async function (x, y, z) {
         //requestAnimationFrame( animate );c
         cube.rotation.x += x;
         cube.rotation.y += y;
@@ -33,8 +34,12 @@
 
     //webSocket
     //Créer une connexion WebSocket
-    const socket = new WebSocket('ws://localhost:9898');
+    const ACTION_HEART_BEAT = 'heartbeat';
+    const ACTION_HEART_ACCEL = 'accel';
 
+    const tagHeartBeat = document.getElementById("#heartbeat");
+
+    const socket = new WebSocket('ws://localhost:9898');
     socket.onopen = function(e) {
        console.log("[open] Connection established");
        console.log("Sending to server");
@@ -43,8 +48,13 @@
 
     socket.onmessage = function(event) {
         let data = JSON.parse(event.data);
-        animate(data.x, data.y, data.z);
-        //console.log(`[message] Data received from server: ${event.data}`);
+        console.log(data);
+        if(data.action === ACTION_HEART_BEAT){
+            tagHeartBeat.innerText = "heartbeat : "+data.value;
+        }
+        if(data.action === ACTION_HEART_ACCEL){
+            animate(data.x, data.y, data.z);
+        }
     };
 
     socket.onclose = function(event) {
@@ -60,7 +70,6 @@
     socket.onerror = function(error) {
         console.log(`[error] ${error.message}`);
     };
-
 </script>
 </body>
 </html>
