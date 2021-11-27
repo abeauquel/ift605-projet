@@ -2,7 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Piapp</title>
+    <title>PI App</title>
+    <style>
+        h1.center{
+            text-align: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size:150px;
+            font-weight: bold;
+            color: #00f7ff;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
 <div style="position: absolute; padding-left: 10px;color: white; padding-top: 50px">
@@ -22,7 +34,9 @@
     <h1 id="#you" style="color: white;">You :</h1>
 </div>
 
-<h1 style="position: absolute; left: 35%; top:50%; color: #00f7ff; font-weight: bold; font-size:100px"> Le training va commencer !</h1>
+<h1 id="#start-training" class="center">
+    Choissez un entrainement sur le telephone
+</h1>
 
 <script src="js/three.js"></script>
 <script>
@@ -53,6 +67,7 @@
     const tagTrainingName = document.getElementById("#training-name");
     const tagTrainingCoach = document.getElementById("#training-coach");
     const tagTrainingExercices = document.getElementById("#trainings-exercices");
+    const tagStartTraining = document.getElementById("#start-training");
 
     const socket = new WebSocket('ws://localhost:9898');
 
@@ -114,9 +129,25 @@
     };
 
     let startTraining = function (data){
-        tagTrainingName.innerText = "Training : "+data.training;
-        tagTrainingCoach.innerText = "Coach : "+data.coach;
-        tagTrainingExercices.innerText = "Exercices : "+data.exercices;
+        let texts =['Le training va commencer !', '3', '2', '1', 'GO!'];
+        let interval = setInterval(function() {
+
+            if(texts.length === 0){
+                tagTrainingName.innerText = "Training : "+data.training;
+                tagTrainingCoach.innerText = "Coach : "+data.coach;
+                tagTrainingExercices.innerText = "Exercices : "+data.exercices;
+                clearInterval(interval);
+                //tagStartTraining.hidden = true;
+            }else {
+                tagStartTraining.innerText = texts.shift();
+                tagStartTraining.style.textAlign = 'center';
+            }
+        }, 1000);
+
+
+
+
+
     }
 
     let handleConnection = function(data){

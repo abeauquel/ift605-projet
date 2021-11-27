@@ -8,7 +8,7 @@ const options = {
 let getTraining = function (id, callback){
     request(options, function (error, response) {
         if (error) throw new Error(error);
-        console.log(response.body);
+        //console.log(response.body);
         let trainings = JSON.parse(response.body.toString());
         for (let i = 0; i < trainings.length; i++) {
             let training = trainings[i];

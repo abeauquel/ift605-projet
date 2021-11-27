@@ -26,7 +26,6 @@ router.get('/js/three.js',function(req,res){
     res.sendFile(path.join(__dirname+'/js/three.js'));
 });
 
-
 app.listen(port, hostname, () => {
     console.log(`Le serveur tourne à l'adresse http://${hostname}:${port}/`);
 })
