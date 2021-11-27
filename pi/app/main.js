@@ -35,8 +35,8 @@ app.use('/', router);
 
 
 let startTraining = function(training){
-    console.log('START TRAINING !!!');
-    console.log(training);
+    // console.log('START TRAINING !!!');
+    // console.log(training);
     let data = {};
     data.action = 'training';
     data.training = training.name;
