@@ -17,7 +17,8 @@ const app = express();
 const path = require('path');
 const router = express.Router();
 let myWs = null;
-
+let idClient = 4;
+let idTraining = 7;
 router.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/index.html'));
 });
@@ -33,37 +34,23 @@ app.listen(port, hostname, () => {
 app.use('/', router);
 
 
-let startTraining = function(training){
-    let data = {};
-    data.action = 'training';
-    data.training = training.name;
-    data.coach = training.creator.userName + " / "+ training.creator.firstName + " " + training.creator.lastName;
-    data.exercices = " ";
-    for (let i = 0; i < training.exerciceInTrainingList.length; i++) {
-        data.exercices+= training.exerciceInTrainingList[i].exercice.name + ", ";
-    }
-    if (myWs != null){
-        myWs.send(JSON.stringify(data));
-        setTimeout(() => {  start(myWs);}, 6000);
-    }
-}
-
+//Bluetooth
 let listenerRFCOMM = function (val) {
     let messages = actionFunctions.parseMessages(val);
     for (let message of messages) {
         console.log(message);
         let action = actionFunctions.deserializeAction(message);
         if(action.action === 'start_training'){
-            let id = action.id;
-            training.getTraining(id, startTraining);
+            idTraining = action.idTraining;
+            idClient = action.idClient;
+            //todo recup idClient
+            training.getTraining(idTraining, startTraining);
         }
-        //console.log(action);
     }
 }
 
 
 
-//Create an event handler:
 let eventOnConnection = function () {
     console.log('Connection true');
     let data = {};
@@ -88,8 +75,7 @@ eventEmitter.on('connection-false', eventOnDisConnection);
 bluetooth.startALL(listenerRFCOMM, eventEmitter);
 
 
-
-// Create a server object
+//websocket
 const wss = new WebSocket.Server({ port: 9898 })
 
 
@@ -100,9 +86,48 @@ wss.on('connection', ws => {
 })
 let start = async function(ws){
 
-    exercice.start(ws);
+    exercice.start(ws, eventEmitter);
     sensor.start(ws);
 }
+
+
+//training
+let startTraining = function(training){
+    let data = {};
+    data.action = 'training';
+    data.training = training.name;
+    data.coach = training.creator.userName + " / "+ training.creator.firstName + " " + training.creator.lastName;
+    data.exercices = " ";
+    for (let i = 0; i < training.exerciceInTrainingList.length; i++) {
+        data.exercices+= training.exerciceInTrainingList[i].exercice.name + ", ";
+    }
+    if (myWs != null){
+        myWs.send(JSON.stringify(data));
+        setTimeout(() => {  start(myWs);}, 6000);
+    }
+}
+
+let endTraining = function(){
+    console.log("endTraining");
+    exercice.stop()
+    sensor.stop();
+    //heartbeat.stop();
+    //todo body for test
+    let body = JSON.stringify({"tpsTotalMinute":50,"nbCalorie":200,"bpmMoyen":140,"bpmMin":100,"bpmMax":180,"pourcentageRealise":100,"vitesseExecutionMoyenne":10,"description":"my super training termine, pas facile","client":{"id":4},"training":{"id":7}})
+    training.postTrainingReport(body, eventEmitter);
+}
+eventEmitter.on('end-training', endTraining);
+
+let endTrainingOk = function(){
+    console.log("endTrainingOk");
+    //todo recup id report
+    let data = {};
+    data.action = 'end-training';
+
+    setTimeout(() => {  myWs.send(JSON.stringify(data));}, 3000);
+}
+
+eventEmitter.on('end-training-ok', endTrainingOk);
 
 
 

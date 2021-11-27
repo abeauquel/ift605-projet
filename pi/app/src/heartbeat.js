@@ -2,13 +2,13 @@ const tStep = 1000;
 const ACTION = 'heartbeat';
 const fs = require('fs');
 const readline = require('readline');
-
+let interval;
 let generateHeartBeat = async function (ws){
     console.log("heartbeat.js "+ new Date());
 
     let pastHeartBeat = 70;
     let cheatVariation = 5;
-    let interval = setInterval(function(str1, str2) {
+    interval = setInterval(function(str1, str2) {
         let data = {};
         data.action = ACTION;
         let newHeartBeat = pastHeartBeat + cheatVariation;
@@ -34,6 +34,11 @@ let generateHeartBeat = async function (ws){
 
 }
 
+let stop = function (){
+    clearInterval(interval);
+}
+
 module.exports = {
-    start : generateHeartBeat
+    start : generateHeartBeat,
+    stop : stop
 };

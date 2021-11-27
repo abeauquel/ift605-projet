@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<body>
+<body id="#body">
 <div style="position: absolute; padding-left: 10px;color: white; padding-top: 50px">
 
     <h1 id="#heartbeat" style="color: red;">heartbeat : </h1>
@@ -24,7 +24,7 @@
     <h1 id="#exercice-set"></h1>
     <h1 id="#exercice-repetition"></h1>
 </div>
-<div style="right: 40%; position: absolute; padding-right: 10px;color: white">
+<div  style="right: 40%; position: absolute; padding-right: 10px;color: white">
     <h1 id="#training-name" >Sélectionne un training sur le téléphone</h1>
     <h1 id="#training-coach"></h1>
     <h1 id="#trainings-exercices"></h1>
@@ -126,6 +126,11 @@
         if(data.action === ACTION_TRAINING){
             startTraining(data);
         }
+
+        if(data.action === 'end-training'){
+            tagStartTraining.innerText="Fin du training, bien joué !";
+            hiddenAll(true);
+        }
     };
 
     let startTraining = function (data){
@@ -137,13 +142,24 @@
                 tagTrainingCoach.innerText = "Coach : "+data.coach;
                 tagTrainingExercices.innerText = "Exercices : "+data.exercices;
                 clearInterval(interval);
-                tagStartTraining.hidden = true;
+                hiddenAll(false);
+
             }else {
                 tagStartTraining.innerText = texts.shift();
                 tagStartTraining.style.textAlign = 'center';
             }
         }, 1000);
 
+    }
+
+    let hiddenAll = function (bool){
+        tagStartTraining.hidden = !bool;
+        tagTrainingExercices.hidden = bool;
+        tagTrainingCoach.hidden = bool;
+        tagTrainingName.hidden = bool;
+        tagExerciceRep.hidden = bool;
+        tagExerciceName.hidden = bool;
+        tagExerciceSet.hidden = bool;
     }
 
     let handleConnection = function(data){

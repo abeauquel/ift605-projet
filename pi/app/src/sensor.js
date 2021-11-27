@@ -4,6 +4,7 @@ const fs = require('fs');
 const readline = require('readline');
 
 let buffer = [];
+let interval;
 let readFile = async function (ws){
     console.log("sensor.js"+ new Date());
 
@@ -30,14 +31,20 @@ let readFile = async function (ws){
         }
     });
 
-    let interval = setInterval(function(str1, str2) {
+    interval = setInterval(function(str1, str2) {
         if(buffer.length >0){
             let data = buffer.shift();
             ws.send(JSON.stringify(data));
         }
     }, tStep, "Hello.", "How are you?");
+
+}
+
+let stopSensor = function (){
+    clearInterval(interval);
 }
 
 module.exports = {
-    start : readFile
+    start : readFile,
+    stop : stopSensor
 };

@@ -1,13 +1,16 @@
 const tStep = 100;
 const ACTION = 'exercice';
+let interval;
 
-let start = async function (ws){
+let start = async function (ws, eventEmitter){
     console.log("exercice.js"+ new Date());
 
     let name = "Kettlebell swing";
     let repetitionInSet = 12;
     let repetition = 12;
-    let set = 5;
+    let set = 2;
+    repetition = 3; //todo test
+    set = 1; //todo test
     let tic = 0;
     let sens = 1;
     let doubleTic =0;
@@ -15,7 +18,7 @@ let start = async function (ws){
     let y= 0;
     let z = 0;
     let variation = 0.08;
-    let interval = setInterval(function(str1, str2) {
+    interval = setInterval(function(str1, str2) {
         y += variation * sens;
         x += variation * sens;
         let data = {};
@@ -44,10 +47,19 @@ let start = async function (ws){
 
         }
 
+        //fin du training
+        if(set < 1 ){
+            eventEmitter.emit('end-training');
+        }
 
     }, tStep, "Hello.", "How are you?");
 }
 
+let stop = function (){
+    clearInterval(interval);
+}
+
 module.exports = {
-    start : start
+    start : start,
+    stop : stop
 };
