@@ -40,6 +40,7 @@
     const tagExerciceSet = document.getElementById("#exercice-set");
     const tagExerciceRep = document.getElementById("#exercice-repetition");
     const tagConnection = document.getElementById("#connection");
+    const tagYou = document.getElementById("#you");
 
     const socket = new WebSocket('ws://localhost:9898');
 
@@ -48,10 +49,8 @@
     scene.add( cubeExercice );
 
 
-    cubeExercice.translateX(-2);
     cube.translateX(2);
     cube.translateY(1.5);
-    cubeExercice.translateY(1.5);
     camera.position.z = 5;
 
     const animate = async function (x, y, z) {
@@ -64,19 +63,38 @@
         renderer.render( scene, camera );
     };
 
+
+    const originXCubeExercice = -3;
     const animateExercice = async function (x, y, z) {
-        //requestAnimationFrame( animate );c
-        if(x !== 0.0)
-            cubeExercice.translateX(x);
-        if(y !== 0.0)
-            cubeExercice.translateY(y);
-        if(z !== 0.0)
-            cubeExercice.translateZ(z);
-        //cube.rotation.z += z;
-        // cube.translateX(x);
-        // cube.translateY(y);
-        renderer.render( scene, camera );
+        cubeExercice.position.x = originXCubeExercice + Math.cos(x) ;
+        cubeExercice.position.y = Math.sin(y);
+
     };
+
+    // var xTest = 0;
+    // var yTest = 0;
+    // var t = 0;
+    // var sens = 1;
+    // function testRender() {
+    //     requestAnimationFrame(testRender);
+    //     t+=1;
+    //     xTest += 0.05 * sens;
+    //     yTest += 0.05 * sens;
+    //
+    //     if(t > 100){
+    //         t=0;
+    //         sens = sens *-1;
+    //         tagYou.innerText= sens;
+    //     }
+    //    // sun.rotation.y += 0.005;
+    //     //cubeExercice.rotation.y += 0.03;
+    //
+    //     cubeExercice.position.x = originXCubeExercice + Math.cos(xTest) ;
+    //     cubeExercice.position.y = Math.sin(yTest);
+    //
+    //     renderer.render(scene, camera);
+    // }
+    // testRender();
 
 
     socket.onopen = function(e) {
