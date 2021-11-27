@@ -20,9 +20,9 @@
 <div style="position: absolute; padding-left: 10px;color: white; padding-top: 50px">
 
     <h1 id="#heartbeat" style="color: red;">heartbeat : </h1>
-    <h1 id="#exercice-name">exercice : </h1>
-    <h1 id="#exercice-set">set 1 sur 4 </h1>
-    <h1 id="#exercice-repetition">rep 1 sur 12 </h1>
+    <h1 id="#exercice-name"></h1>
+    <h1 id="#exercice-set"></h1>
+    <h1 id="#exercice-repetition"></h1>
 </div>
 <div style="right: 40%; position: absolute; padding-right: 10px;color: white">
     <h1 id="#training-name" >Sélectionne un training sur le téléphone</h1>
@@ -137,16 +137,12 @@
                 tagTrainingCoach.innerText = "Coach : "+data.coach;
                 tagTrainingExercices.innerText = "Exercices : "+data.exercices;
                 clearInterval(interval);
-                //tagStartTraining.hidden = true;
+                tagStartTraining.hidden = true;
             }else {
                 tagStartTraining.innerText = texts.shift();
                 tagStartTraining.style.textAlign = 'center';
             }
         }, 1000);
-
-
-
-
 
     }
 

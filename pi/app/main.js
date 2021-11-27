@@ -34,18 +34,18 @@ app.use('/', router);
 
 
 let startTraining = function(training){
-    // console.log('START TRAINING !!!');
-    // console.log(training);
     let data = {};
     data.action = 'training';
     data.training = training.name;
     data.coach = training.creator.userName + " / "+ training.creator.firstName + " " + training.creator.lastName;
     data.exercices = " ";
     for (let i = 0; i < training.exerciceInTrainingList.length; i++) {
-        data.exercices+= training.exerciceInTrainingList[i].exercice.name + ", s";
+        data.exercices+= training.exerciceInTrainingList[i].exercice.name + ", ";
     }
-    if (myWs != null)
+    if (myWs != null){
         myWs.send(JSON.stringify(data));
+        setTimeout(() => {  start(myWs);}, 6000);
+    }
 }
 
 let listenerRFCOMM = function (val) {
@@ -95,14 +95,13 @@ const wss = new WebSocket.Server({ port: 9898 })
 
 wss.on('connection', ws => {
     myWs = ws;
-    start(ws);
+    heartbeat.start(ws);
+    //training.getTraining(7, startTraining);
 })
 let start = async function(ws){
-    heartbeat.start(ws);
+
     exercice.start(ws);
     sensor.start(ws);
-    //todo test
-    training.getTraining(7, startTraining);
 }
 
 
