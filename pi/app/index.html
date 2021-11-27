@@ -12,6 +12,11 @@
     <h1 id="#exercice-set">set 1 sur 4 </h1>
     <h1 id="#exercice-repetition">rep 1 sur 12 </h1>
 </div>
+<div style="right: 40%; position: absolute; padding-right: 10px;color: white">
+    <h1 id="#training-name" >Sélectionne un training sur le téléphone</h1>
+    <h1 id="#training-coach"></h1>
+    <h1 id="#trainings-exercices"></h1>
+</div>
 <div style="right: 0px; position: absolute; padding-right: 10px">
     <h1 id="#connection" style="color: red;">Phone offline</h1>
     <h1 id="#you" style="color: white;">You :</h1>
@@ -34,6 +39,7 @@
     const ACTION_HEART_ACCEL = 'accel';
     const ACTION_EXERCICE = 'exercice';
     const ACTION_CONNECTION = 'connection';
+    const ACTION_TRAINING = 'training';
 
     const tagHeartBeat = document.getElementById("#heartbeat");
     const tagExerciceName = document.getElementById("#exercice-name");
@@ -41,6 +47,9 @@
     const tagExerciceRep = document.getElementById("#exercice-repetition");
     const tagConnection = document.getElementById("#connection");
     const tagYou = document.getElementById("#you");
+    const tagTrainingName = document.getElementById("#training-name");
+    const tagTrainingCoach = document.getElementById("#training-coach");
+    const tagTrainingExercices = document.getElementById("#trainings-exercices");
 
     const socket = new WebSocket('ws://localhost:9898');
 
@@ -71,32 +80,6 @@
 
     };
 
-    // var xTest = 0;
-    // var yTest = 0;
-    // var t = 0;
-    // var sens = 1;
-    // function testRender() {
-    //     requestAnimationFrame(testRender);
-    //     t+=1;
-    //     xTest += 0.05 * sens;
-    //     yTest += 0.05 * sens;
-    //
-    //     if(t > 100){
-    //         t=0;
-    //         sens = sens *-1;
-    //         tagYou.innerText= sens;
-    //     }
-    //    // sun.rotation.y += 0.005;
-    //     //cubeExercice.rotation.y += 0.03;
-    //
-    //     cubeExercice.position.x = originXCubeExercice + Math.cos(xTest) ;
-    //     cubeExercice.position.y = Math.sin(yTest);
-    //
-    //     renderer.render(scene, camera);
-    // }
-    // testRender();
-
-
     socket.onopen = function(e) {
        console.log("[open] Connection established");
        console.log("Sending to server");
@@ -121,7 +104,17 @@
             tagExerciceSet.innerText = "set " + data.set;
             tagExerciceRep.innerText = "repetition " + data.repetition;
         }
+
+        if(data.action === ACTION_TRAINING){
+            startTraining(data);
+        }
     };
+
+    let startTraining = function (data){
+        tagTrainingName.innerText = "Training : "+data.training;
+        tagTrainingCoach.innerText = "Coach : "+data.coach;
+        tagTrainingExercices.innerText = "Exercices : "+data.exercices;
+    }
 
     let handleConnection = function(data){
         if(data.value){

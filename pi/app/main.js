@@ -16,7 +16,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const router = express.Router();
-
+let myWs = null;
 
 router.get('/',function(req,res){
     res.sendFile(path.join(__dirname+'/index.html'));
@@ -37,6 +37,16 @@ app.use('/', router);
 let startTraining = function(training){
     console.log('START TRAINING !!!');
     console.log(training);
+    let data = {};
+    data.action = 'training';
+    data.training = training.name;
+    data.coach = training.creator.userName + " / "+ training.creator.firstName + " " + training.creator.lastName;
+    data.exercices = " ";
+    for (let i = 0; i < training.exerciceInTrainingList.length; i++) {
+        data.exercices+= training.exerciceInTrainingList[i].exercice.name + ", s";
+    }
+    if (myWs != null)
+        myWs.send(JSON.stringify(data));
 }
 
 let listenerRFCOMM = function (val) {
@@ -53,7 +63,7 @@ let listenerRFCOMM = function (val) {
 }
 
 
-let myWs = null;
+
 //Create an event handler:
 let eventOnConnection = function () {
     console.log('Connection true');
@@ -73,7 +83,6 @@ let eventOnDisConnection = function () {
         myWs.send(JSON.stringify(data));
 };
 
-//Assign the event handler to an event:
 eventEmitter.on('connection-true', eventOnConnection);
 eventEmitter.on('connection-false', eventOnDisConnection);
 
@@ -85,7 +94,6 @@ bluetooth.startALL(listenerRFCOMM, eventEmitter);
 const wss = new WebSocket.Server({ port: 9898 })
 
 
-
 wss.on('connection', ws => {
     myWs = ws;
     start(ws);
@@ -94,6 +102,8 @@ let start = async function(ws){
     heartbeat.start(ws);
     exercice.start(ws);
     sensor.start(ws);
+    //todo test
+    training.getTraining(7, startTraining);
 }
 
 
