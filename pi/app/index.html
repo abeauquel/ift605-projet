@@ -82,8 +82,9 @@
 
     const animate = async function (x, y, z) {
         //requestAnimationFrame( animate );c
-        cube.rotation.x += x;
-        cube.rotation.y += y;
+        cube.position.x = x;
+        cube.position.y = y;
+        cube.position.z = z;
         //cube.rotation.z += z;
         // cube.translateX(x);
         // cube.translateY(y);
