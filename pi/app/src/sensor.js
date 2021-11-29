@@ -1,15 +1,17 @@
-const tStep = 30;
-const ACTION = 'accel';
+
 const fs = require('fs');
 const readline = require('readline');
 
-let bufferPrecedent = [];
+let bufferIMoins1 = [];
 let buffer = [];
-let bufferSuivante = [];
+let bufferIPlus1 = [];
 
 let interval;
 
 const G = 9.81;
+const tStep = 30;
+const ACTION = 'accel';
+const timestep = 0.03;
 
 let readFile = async function (ws){
     console.log("sensor.js"+ new Date());
@@ -17,7 +19,7 @@ let readFile = async function (ws){
     const readInterface = readline.createInterface({
         input: fs.createReadStream('output.txt')
     });
-
+    let i=0;
     readInterface.on('line', async function (line) {
         if (line) {
             let array = line.split('/')
@@ -39,63 +41,50 @@ let readFile = async function (ws){
             data.x = x;
             data.y = y;
             data.z = z;
-
+            data.i = i;
+            i++;
             if(buffer.length !== 0)
-                bufferSuivante.push(data);
+                bufferIPlus1.push(data);
 
-            if(bufferPrecedent.length !== 0)
+            if(bufferIMoins1.length !== 0)
                 buffer.push(data)
 
-            bufferPrecedent.push(data);
+            bufferIMoins1.push(data);
         }
     });
 
 
-    let vel = {};
-    vel.x = 0.0;
-    vel.y = 0.0;
-    vel.z = 0.0;
+    let vel = { x:0.0, y:0.0, z: 0.0};
+    let vel_old = { x:0.0, y:0.0, z: 0.0};
+    let accel_old = { x:0.0, y:0.0, z: 0.0};
+    let disp = { x:0.0, y:0.0, z: 0.0};
+    let disp_old = { x:0.0, y:0.0, z: 0.0};
 
-    let vel_old = {};
-    vel_old.x = 0.0;
-    vel_old.y = 0.0;
-    vel_old.z = 0.0;
-
-    let accel_old = {};
-    accel_old.x=0.0;
-    accel_old.y=0.0;
-    accel_old.z=0.0;
-
-    let disp = {};
-    disp.x=0.0;
-    disp.y=0.0;
-    disp.z=0.0;
-
-    let disp_old = {};
-    disp_old.x=0.0;
-    disp_old.y=0.0;
-    disp_old.z=0.0;
-    let timestep = 0.03;
+    let j=0;
+    const precision = 1000.0
     interval = setInterval(function(str1, str2) {
-
-        if(bufferSuivante.length > 0){
+        if(j > 2 && buffer.length > 3){
             disp.x = disp_old.x + (vel.x - vel_old.x) * timestep / 2.0;
             disp.y = disp_old.y + (vel.y - vel_old.y) * timestep / 2.0;
             disp.z = disp_old.z + (vel.z - vel_old.z) * timestep / 2.0;
 
             disp_old = disp;
-            let data = {};
-            data.action = ACTION;
+            let data = buffer.shift();
             data.x = disp.x;
             data.y = disp.y;
             data.z = disp.z;
             ws.send(JSON.stringify(data));
+            console.log('disp : '+ j);
             console.log(disp);
+
+            // console.log(buffer[199]);
+            // console.log(buffer[200]);
+            // console.log(bufferIPlus1[201]);
 
         }
 
-        if(buffer.length > 0){
-            let data = buffer.shift();
+        if(j > 1 && buffer.length > 3){
+            let data = buffer[1];
             vel.x = vel_old.x + (data.x - accel_old.x) * timestep / 2.0;
             vel.y = vel_old.y + (data.y - accel_old.y) * timestep / 2.0;
             vel.z = vel_old.z + (data.z - accel_old.z) * timestep / 2.0;
@@ -103,13 +92,19 @@ let readFile = async function (ws){
             vel_old.x = vel.x;
             vel_old.y = vel.y;
             vel_old.z = vel.z;
+            console.log('vel : '+ j);
+            console.log(vel);
         }
 
-        if(bufferPrecedent.length > 0){
-            let data = bufferPrecedent.shift();
-            accel_old.x = data.x;
-            accel_old.y = data.y;
-            accel_old.z = data.z;
+        if(buffer.length > 3){
+            let data = buffer[0];
+            accel_old.x = data.x ;
+            accel_old.y = data.y ;
+            accel_old.z = data.z ;
+            console.log('accel : '+ j);
+            console.log(accel_old);
+
+            j++;
         }
 
     }, tStep, "Hello.", "How are you?");
