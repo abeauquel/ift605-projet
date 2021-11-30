@@ -17,7 +17,7 @@ let readFile = async function (ws){
     console.log("sensor.js"+ new Date());
 
     const readInterface = readline.createInterface({
-        input: fs.createReadStream('output.txt')
+        input: fs.createReadStream('displacement.txt')
     });
     let i=0;
     readInterface.on('line', async function (line) {
@@ -29,11 +29,6 @@ let readFile = async function (ws){
             let y = parseFloat(array[3]);
             let z = parseFloat(array[4]);
 
-            // acceleration
-            x = x * G; // metre par seconce^2
-            y = y * G; // metre par seconce^2
-            z = ( z - 1) * G; // metre par seconce^2
-
             let data = {};
             data.action = ACTION;
             data.roll = roll;
@@ -43,13 +38,9 @@ let readFile = async function (ws){
             data.z = z;
             data.i = i;
             i++;
-            if(buffer.length !== 0)
-                bufferIPlus1.push(data);
 
-            if(bufferIMoins1.length !== 0)
-                buffer.push(data)
+            buffer.push(data)
 
-            bufferIMoins1.push(data);
         }
     });
 
@@ -64,49 +55,55 @@ let readFile = async function (ws){
     const precision = 1000.0
     interval = setInterval(function(str1, str2) {
         if(j > 2 && buffer.length > 3){
-            disp.x = disp_old.x + (vel.x - vel_old.x) * timestep / 2.0;
-            disp.y = disp_old.y + (vel.y - vel_old.y) * timestep / 2.0;
-            disp.z = disp_old.z + (vel.z - vel_old.z) * timestep / 2.0;
-
-            disp_old = disp;
-            let data = buffer.shift();
-            data.x = disp.x;
-            data.y = disp.y;
-            data.z = disp.z;
-            ws.send(JSON.stringify(data));
-            console.log('disp : '+ j);
-            console.log(disp);
-
-            // console.log(buffer[199]);
-            // console.log(buffer[200]);
-            // console.log(bufferIPlus1[201]);
-
-        }
-
-        if(j > 1 && buffer.length > 3){
-            let data = buffer[1];
-            vel.x = vel_old.x + (data.x - accel_old.x) * timestep / 2.0;
-            vel.y = vel_old.y + (data.y - accel_old.y) * timestep / 2.0;
-            vel.z = vel_old.z + (data.z - accel_old.z) * timestep / 2.0;
-
-            vel_old.x = vel.x;
-            vel_old.y = vel.y;
-            vel_old.z = vel.z;
-            console.log('vel : '+ j);
-            console.log(vel);
-        }
-
-        if(buffer.length > 3){
-            let data = buffer[0];
-            accel_old.x = data.x ;
-            accel_old.y = data.y ;
-            accel_old.z = data.z ;
-            console.log('accel : '+ j);
-            console.log(accel_old);
-
-            j++;
-        }
-
+        //     disp.x = disp_old.x + (vel.x + vel_old.x) * timestep / 2.0;
+        //     disp.y = disp_old.y + (vel.y + vel_old.y) * timestep / 2.0;
+        //     disp.z = disp_old.z + (vel.z + vel_old.z) * timestep / 2.0;
+        //
+        //     // disp.x = (vel.x + vel_old.x) * timestep / 2.0;
+        //     // disp.y = (vel.y + vel_old.y) * timestep / 2.0;
+        //     // disp.z = (vel.z + vel_old.z) * timestep / 2.0;
+        //
+        //     disp_old = disp;
+        //     let data = buffer.shift();
+        //     data.x = disp.x;
+        //     data.y = disp.y;
+        //     data.z = disp.z;
+        //     ws.send(JSON.stringify(data));
+        //     console.log('disp : '+ j);
+        //     console.log(disp);
+        //
+        //     // console.log(buffer[199]);
+        //     // console.log(buffer[200]);
+        //     // console.log(bufferIPlus1[201]);
+        //
+        // }
+        //
+        // if(j > 1 && buffer.length > 3){
+        //     let data = buffer[1];
+        //     vel.x = vel_old.x + (data.x + accel_old.x) * timestep / 2.0;
+        //     vel.y = vel_old.y + (data.y + accel_old.y) * timestep / 2.0;
+        //     vel.z = vel_old.z + (data.z + accel_old.z) * timestep / 2.0;
+        //
+        //     vel_old.x = vel.x;
+        //     vel_old.y = vel.y;
+        //     vel_old.z = vel.z;
+        //     console.log('vel : '+ j);
+        //     console.log(vel);
+        // }
+        //
+        // if(buffer.length > 3){
+        //     let data = buffer[0];
+        //     accel_old.x = data.x * G;
+        //     accel_old.y = data.y * G;
+        //     accel_old.z = (data.z - 1) * G ;
+        //     console.log('accel : '+ j);
+        //     console.log(accel_old);
+        //
+        //     j++;
+        //
+        // }
+        let data = buffer.shift();
+        ws.send(JSON.stringify(data));
     }, tStep, "Hello.", "How are you?");
 
 }
