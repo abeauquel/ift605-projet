@@ -53,7 +53,7 @@
     const cubeExercice = new THREE.Mesh( geometry, material );
 
     const ACTION_HEART_BEAT = 'heartbeat';
-    const ACTION_HEART_ACCEL = 'accel';
+    const ACTION_ACCEL = 'accel';
     const ACTION_EXERCICE = 'exercice';
     const ACTION_CONNECTION = 'connection';
     const ACTION_TRAINING = 'training';
@@ -84,7 +84,7 @@
         //requestAnimationFrame( animate );c
         cube.position.x = x;
         cube.position.y = y;
-        cube.position.z = z;
+        //cube.position.z = z;
         //cube.rotation.z += z;
         // cube.translateX(x);
         // cube.translateY(y);
@@ -94,7 +94,7 @@
 
     const originXCubeExercice = -3;
     const animateExercice = async function (x, y, z) {
-        cubeExercice.position.x = originXCubeExercice + Math.cos(x) ;
+        cubeExercice.position.x = originXCubeExercice + Math.cos(x);
         cubeExercice.position.y = Math.sin(y);
 
     };
@@ -110,7 +110,7 @@
         if(data.action === ACTION_HEART_BEAT){
             tagHeartBeat.innerText = "heartbeat : "+data.value;
         }
-        if(data.action === ACTION_HEART_ACCEL){
+        if(data.action === ACTION_ACCEL){
             animate(data.x, data.y, data.z);
         }
         if(data.action === ACTION_CONNECTION){

@@ -82,7 +82,7 @@ const wss = new WebSocket.Server({ port: 9898 })
 wss.on('connection', ws => {
     myWs = ws;
     heartbeat.start(ws);
-    //training.getTraining(7, startTraining);
+    training.getTraining(7, startTraining); //todo test without phone
 })
 let start = async function(ws){
 

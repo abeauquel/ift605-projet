@@ -39,8 +39,7 @@ let readFile = async function (ws){
             data.i = i;
             i++;
 
-            buffer.push(data)
-
+            buffer.push(data);
         }
     });
 
@@ -102,8 +101,12 @@ let readFile = async function (ws){
         //     j++;
         //
         // }
-        let data = buffer.shift();
-        ws.send(JSON.stringify(data));
+            if(buffer.length > 0){
+                let data = buffer.shift();
+                ws.send(JSON.stringify(data));
+            }
+        }
+
     }, tStep, "Hello.", "How are you?");
 
 }
