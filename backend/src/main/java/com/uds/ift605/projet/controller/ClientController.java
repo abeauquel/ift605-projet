@@ -25,11 +25,6 @@ public class ClientController {
         return clientService.recupererClient(id);
     }
 
-    @RequestMapping("/client/{username}")
-    public Client getClientByUsername(@PathVariable String username) throws Exception {
-        return clientService.recupererClient(username);
-    }
-
     @PostMapping("/client")
     public Client postClient(@RequestBody Client client) throws IOException {
         return clientService.creerNouveauClient(client);

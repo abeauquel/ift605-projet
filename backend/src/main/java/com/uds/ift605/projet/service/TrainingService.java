@@ -35,6 +35,10 @@ public class TrainingService {
         return training;
     }
 
+    public void delete(Long id) {
+        trainingRepository.delete(trainingRepository.getOne(id));
+    }
+
     public Training getTraining(Long id) throws Exception {
         Optional<Training> training = trainingRepository.findById(id);
         if(!training.isPresent())

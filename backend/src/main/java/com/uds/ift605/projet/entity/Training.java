@@ -24,7 +24,7 @@ public class Training {
     @JoinColumn(name = "client_id")
     private Client creator;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private List<ExerciceInTraining> exerciceInTrainingList;
 
     public Training() {
