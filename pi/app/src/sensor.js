@@ -1,6 +1,7 @@
 
 const fs = require('fs');
 const readline = require('readline');
+const {exec} = require("child_process");
 
 let bufferIMoins1 = [];
 let buffer = [];
@@ -13,32 +14,53 @@ const tStep = 30;
 const ACTION = 'accel';
 const timestep = 0.03;
 
+function execSysCall(command) {
+    return new Promise((resolve, reject) => {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                reject(error);
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                reject(stderr);
+            }
+
+            resolve(stdout);
+        });
+    });
+
+}
+
 let readFile = async function (ws){
     console.log("sensor.js"+ new Date());
+    await execSysCall("sudo chmod 777 /dev/ttyACM0");
+    console.log("chmod /dev/ttyACM0");
 
     const readInterface = readline.createInterface({
-        input: fs.createReadStream('displacement.txt')
+        input: fs.createReadStream('/dev/ttyACM0')
     });
     let i=0;
     readInterface.on('line', async function (line) {
         if (line) {
+
             let array = line.split('/')
-            let roll = parseFloat(array[0]);
-            let pitch = parseFloat(array[1]);
-            let x = parseFloat(array[2]);
-            let y = parseFloat(array[3]);
-            let z = parseFloat(array[4]);
+           // let roll = parseFloat(array[0]);
+            //let pitch = parseFloat(array[1]);
+            let x = parseFloat(array[0]);
+            let y = parseFloat(array[1]);
+            let z = parseFloat(array[2]);
 
             let data = {};
             data.action = ACTION;
-            data.roll = roll;
-            data.pitch = pitch;
+            //data.roll = roll;
+            //data.pitch = pitch;
             data.x = x;
             data.y = y;
             data.z = z;
             data.i = i;
             i++;
-
+            console.log(data);
             buffer.push(data);
         }
     });
@@ -53,7 +75,7 @@ let readFile = async function (ws){
     let j=0;
     const precision = 1000.0
     interval = setInterval(function(str1, str2) {
-        if(j > 2 && buffer.length > 3){
+        //if(j > 2 && buffer.length > 3){
         //     disp.x = disp_old.x + (vel.x + vel_old.x) * timestep / 2.0;
         //     disp.y = disp_old.y + (vel.y + vel_old.y) * timestep / 2.0;
         //     disp.z = disp_old.z + (vel.z + vel_old.z) * timestep / 2.0;
@@ -103,9 +125,10 @@ let readFile = async function (ws){
         // }
             if(buffer.length > 0){
                 let data = buffer.shift();
+                console.log(data);
                 ws.send(JSON.stringify(data));
             }
-        }
+        //}
 
     }, tStep, "Hello.", "How are you?");
 
