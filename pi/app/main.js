@@ -43,7 +43,6 @@ let listenerRFCOMM = function (val) {
         if(action.action === 'start_training'){
             idTraining = action.idTraining;
             idClient = action.idClient;
-            //todo recup idClient
             training.getTraining(idTraining, startTraining);
         }
     }
@@ -82,7 +81,7 @@ const wss = new WebSocket.Server({ port: 9898 })
 wss.on('connection', ws => {
     myWs = ws;
     heartbeat.start(ws);
-    training.getTraining(7, startTraining); //todo test without phone
+    //training.getTraining(7, startTraining); //todo test without phone
 })
 let start = async function(ws){
 
@@ -113,8 +112,17 @@ let endTraining = function(){
     sensor.stop();
     //heartbeat.stop();
     //todo body for test
-    let body = JSON.stringify({"tpsTotalMinute":50,"nbCalorie":200,"bpmMoyen":140,"bpmMin":100,"bpmMax":180,"pourcentageRealise":100,"vitesseExecutionMoyenne":10,"description":"my super training termine, pas facile","client":{"id":4},"training":{"id":7}})
-    training.postTrainingReport(body, eventEmitter);
+    let body = {"tpsTotalMinute":50,"nbCalorie":200,"bpmMoyen":140,"bpmMin":100,"bpmMax":180,"pourcentageRealise":100,"vitesseExecutionMoyenne":10,"description":"my super training termine, pas facile","client":{"id":4},"training":{"id":7}};
+    body.tpsTotalMinute= Math.floor(Math.random() * 10);
+    body.nbCalorie= Math.floor(Math.random() * 200);
+    body.client.id=idClient;
+    body.training.id=idTraining;
+    body.bpmMin=Math.floor(Math.random() * 100);
+    body.bpmMax=Math.floor(Math.random() * 100);
+    body.bpmMoyen=Math.floor(Math.random() * 100);
+    body.vitesseExecutionMoyenne=Math.floor(Math.random() * 10);
+    body.description = "test from pi";
+    training.postTrainingReport(JSON.stringify(body), eventEmitter);
 }
 eventEmitter.on('end-training', endTraining);
 

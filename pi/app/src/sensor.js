@@ -60,7 +60,7 @@ let readFile = async function (ws){
             data.z = z;
             data.i = i;
             i++;
-            console.log(data);
+            //console.log(data);
             buffer.push(data);
         }
     });
@@ -125,7 +125,7 @@ let readFile = async function (ws){
         // }
             if(buffer.length > 0){
                 let data = buffer.shift();
-                console.log(data);
+                //console.log(data);
                 ws.send(JSON.stringify(data));
             }
         //}
