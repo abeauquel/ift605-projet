@@ -1,4 +1,5 @@
 const bluetooth = require('./src/bluetooth.js');
+const light = require('./src/light.js');
 const sensor = require('./src/sensor.js');
 const heartbeat = require('./src/heartbeat.js');
 const exercice = require('./src/exercice.js');
@@ -84,7 +85,7 @@ wss.on('connection', ws => {
     //training.getTraining(7, startTraining); //todo test without phone
 })
 let start = async function(ws){
-
+    light.callTurnOnLight();
     exercice.start(ws, eventEmitter);
     sensor.start(ws);
 }
@@ -110,6 +111,7 @@ let endTraining = function(){
     console.log("endTraining");
     exercice.stop()
     sensor.stop();
+    light.callTurnOffLight();
     //heartbeat.stop();
     //todo body for test
     let body = {"tpsTotalMinute":50,"nbCalorie":200,"bpmMoyen":140,"bpmMin":100,"bpmMax":180,"pourcentageRealise":100,"vitesseExecutionMoyenne":10,"description":"my super training termine, pas facile","client":{"id":4},"training":{"id":7}};
