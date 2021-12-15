@@ -8,8 +8,8 @@ function serializeAction(string){
     if(!command.hasOwnProperty(sender))
         throw 'error, no property in command for sender';
 
-    if(!command.hasOwnProperty(receiver))
-        throw 'error, no property in command for receiver';
+//    if(!command.hasOwnProperty(receiver))
+//        throw 'error, no property in command for receiver';
 
     if(!command.hasOwnProperty(action))
         throw 'error, no property in command for action';

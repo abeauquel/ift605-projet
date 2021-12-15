@@ -20,6 +20,8 @@ const turnOffLight = {
 };
 
 let callTurnOnLight = function (){
+        console.log("callTurnOnLight");
+
     request(turnOnLight, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);
@@ -27,6 +29,8 @@ let callTurnOnLight = function (){
 }
 
 let callTurnOffLight = function (){
+        console.log("callTurnOffLight");
+
     request(turnOffLight, function (error, response) {
         if (error) throw new Error(error);
         console.log(response.body);

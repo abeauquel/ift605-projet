@@ -10,7 +10,7 @@ let bufferIPlus1 = [];
 let interval;
 
 const G = 9.81;
-const tStep = 30;
+const tStep = 15;
 const ACTION = 'accel';
 const timestep = 0.03;
 
@@ -34,11 +34,13 @@ function execSysCall(command) {
 
 let readFile = async function (ws){
     console.log("sensor.js"+ new Date());
-    await execSysCall("sudo chmod 777 /dev/ttyACM0");
-    console.log("chmod /dev/ttyACM0");
+    await execSysCall("sudo chmod 777 /dev/ttyACM1");
+    console.log("chmod /dev/ttyACM1");
+
+    fs.truncate('/dev/ttyACM1', 0, function(){console.log('truncated accel file')})
 
     const readInterface = readline.createInterface({
-        input: fs.createReadStream('/dev/ttyACM0')
+        input: fs.createReadStream('/dev/ttyACM1')
     });
     let i=0;
     readInterface.on('line', async function (line) {
