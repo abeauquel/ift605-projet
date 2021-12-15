@@ -34,7 +34,7 @@ function deserializeAction(string){
     } catch (e) {
         console.log('error in serialize action');
         console.log(e);
-        return null;
+        return cmdaction;
     }
     return cmdaction;
 }

@@ -7,10 +7,10 @@ let start = async function (ws, eventEmitter){
 
     let name = "Kettlebell swing";
     let repetitionInSet = 12;
-    let repetition = 12;
+    let repetition = 5;
     let set = 10;
     // repetition = 12; //todo test
-    // set = 1; //todo test
+     set = 1; //todo test
     let tic = 0;
     let sens = 1;
     let doubleTic =0;
